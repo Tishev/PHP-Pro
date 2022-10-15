@@ -22,7 +22,7 @@ function load($className)
         include $file;
     }
 }
-
+// 
 var_dump($argv);
 
 // $faker = Faker\Factory::create('ru_RU')
