@@ -1,24 +1,48 @@
 <?php
+
 namespace GeekBrains\LevelTwo\Blog;
 
 use GeekBrains\LevelTwo\Person\Name;
 
 
-class User {
-    private int $id;
-    private Name $username;
-    private string $login;
+class User
+{
 
-    public function __construct(int $id, Name $username, string $login)
+    public function __construct(
+        private UUID $uuid,
+        private string $username,
+        private Name $name
+    )
     {
-        $this->id = $id;
-        $this->username = $username;
+    }
+
+    public function username(): string
+    {
+        return $this->username;
     }
 
     public function __toString(): string
     {
-        return "Юзер $this->id c именем $this->username и логином $this->login." . PHP_EOL;
+        $firstName = $this->name()->first();
+        $lastName = $this->name()->last();
+        return "Пользователь $firstName $lastName" . PHP_EOL;
     }
 
-};
+    public function uuid(): UUID
+    {
+        return $this->uuid;
+    }
 
+
+    /**
+     * @return Name
+     */
+    public function name(): Name
+    {
+        return $this->name;
+    }
+
+
+
+
+}

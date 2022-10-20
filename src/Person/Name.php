@@ -1,32 +1,39 @@
 <?php
+
 namespace GeekBrains\LevelTwo\Person;
 
-class Name 
+
+class Name
 {
     private string $firstName;
     private string $lastName;
 
-    public function __construct(string $firstName, string $lastName)
-    {
-        $this->firstName = $firstName;
+    public function __construct(
+        string $firstName,
+        string $lastName
+    ) {
         $this->lastName = $lastName;
+        $this->firstName = $firstName;
+    }
+    public function __toString()
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 
-    public function first(): string 
+    /**
+     * @return string
+     */
+    public function first(): string
     {
         return $this->firstName;
     }
-    public function setFirstName(string $firstName): void
-    {
-        $this->firstName = $firstName;
-    }
-    public function last(): string 
+
+    /**
+     * @return string
+     */
+    public function last(): string
     {
         return $this->lastName;
-    }
-    public function setLastName(string $lastName): void
-    {
-        $this->lastName = $lastName;
     }
 
 
