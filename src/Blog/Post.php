@@ -1,62 +1,87 @@
 <?php
 
-
 namespace GeekBrains\LevelTwo\Blog;
 
-// use GeekBrains\LevelTwo\Person\Person;
 
-class Post 
+class Post
 {
-    private int $id;
-    private User $user;
-    private string $text;
 
     public function __construct(
-        int $id,
-        User $user,
-        string $text
+        private ?UUID   $uuid = null,
+        private ?UUID   $author_uuid = null,
+        private ?string $title = null,
+        private ?string $text = null,
     )
-    {
-        $this->id = $id;
-        $this->text = $text;
-        $this->user = $user;
-    }
-
-    public function id(): int 
-    {
-        return $this->id;
-        
-    }
-    public function setId(int $id): void 
-    {
-        $this->id = $id;
-
-    }
-    public function getUser(): User 
-    {
-        return $this->user;
-        
-    }
-    public function setUser(User $user): void 
-    {
-        $this->user = $user;
-
-    }
-    public function getText(): string 
-    {
-        return $this->text;
-        
-    }
-    public function setText(string $text): Post 
-    {
-        $this->text = $text;
-        return $this;
-    }
-
+    {}
 
     public function __toString()
     {
-        return $this->author . 'пишет' . $this->text . PHP_EOL;
-
+        return $this->author_uuid . ' пишет: ' . $this->text;
     }
+
+    /**
+     * @return UUID|null
+     */
+    public function getUuid(): ?UUID
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param UUID|null $uuid
+     */
+    public function setUuid(?UUID $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * @return UUID|null
+     */
+    public function getAuthorUuid(): ?UUID
+    {
+        return $this->author_uuid;
+    }
+
+    /**
+     * @param UUID|null $author_uuid
+     */
+    public function setAuthorUuid(?UUID $author_uuid): void
+    {
+        $this->author_uuid = $author_uuid;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string|null $title
+     */
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param string|null $text
+     */
+    public function setText(?string $text): void
+    {
+        $this->text = $text;
+    }
+
+
 }

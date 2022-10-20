@@ -1,71 +1,48 @@
 <?php
 
-
-use GeekBrains\LevelTwo\Blog\User;
-use GeekBrains\LevelTwo\Person\{Name, Person};
+use GeekBrains\LevelTwo\Blog\Commands\Arguments;
+use GeekBrains\LevelTwo\Blog\Commands\CreateUserCommand;
 use GeekBrains\LevelTwo\Blog\Post;
-use GeekBrains\LevelTwo\Blog\Repositories\InMemoryUsersRepository;
-use GeekBrains\LevelTwo\Blog\Exceptions\UserNotFoundException;
+use GeekBrains\LevelTwo\Blog\Repositories\UsersRepository\SqliteUsersRepository;
+use GeekBrains\LevelTwo\Blog\UUID;
+use GeekBrains\LevelTwo\Blog\Repositories\PostsRepository\SqlitePostsRepository;
 
-spl_autoload_register('load');
-
-// include __DIR__ . "/vendor/autoload.php";
-
-function load($className)
-{
-    // приходит GeekBrains\Person\Name
-    $file = $className . "php"; // Person/Name.php
-    $file = str_replace("\\", "/", $file);
-    $file = str_replace("GeekBrains/LevelTwo/", "src/", $file);
-    // нужно src/Person/Name.php 
-    if (file_exists($file)) {
-        include $file;
-    }
-}
-// 
-var_dump($argv);
-
-// $faker = Faker\Factory::create('ru_RU')
-
-//echo $faker->name() . PHP_EOL;
-//echo $faker->realText(rand(100, 200)) . PHP_EOL, 
-
-
-$name = new Name('Peter', 'Sidorov');
-
-$user = new User(1, $name, "Admin");
-
-echo $user;
-
-
-$name = new Name('Peter' , 'Sidorov' );
-$User = new Person($name, new DateTimeImmutable());
-
-
-$post = new Post(
-    1,
-    $person,
-    'Всем привет'
-);
-
-echo $post;
-
-
-$name2 = new Name('Иван', 'Таранов');
-
-$user2 = new User(2, $name2, "User");
+require_once __DIR__ . '/vendor/autoload.php';
 
 try {
-    $userRepository->save($user);
-    $userRepository->save($user2);
+    //Создаём объект подключения к SQLite
+    $connection = new PDO('sqlite:' . __DIR__ . '/blog.sqlite');
+
+    $faker = Faker\Factory::create('ru_RU');
+
+    $postRepository = new SqlitePostsRepository($connection);
+
+    echo $postRepository->get(new UUID('d02eef69-1a06-460f-b859-202b84164734'));
+
+    /*$post = new Post(
+    UUID::random(),
+    UUID::random(),
+    $faker->realText(rand(20, 30)),
+    $faker->realText(rand(200, 280))
+);
+
+$postRepository->save($post);*/
+
+    //Создаём объект репозитория
+    //$usersRepository = new SqliteUsersRepository($connection);
+    // $usersRepository = new InMemoryUsersRepository();
+
+    // $command = new CreateUserCommand($usersRepository);
 
 
-        echo $userRepository->get(1);
-        echo $userRepository->get(2);
-        echo $userRepository->get(3);
-} catch (UserNotFoundException | Exception $e) {
-    echo $e->getMessage();
+    //  $command->handle(Arguments::fromArgv($argv));
+
+    // $user = $usersRepository->getByUsername('ivan');
+    // print $user;
+    // $usersRepository->save(new User(UUID::random(), 'admin', new Name('Ivan', 'Nikitin')));
+    // echo $usersRepository->getByUsername('admin');
+    //$usersRepository->save(new User(2, new Name('Anna', 'Petrova')));
+
+} catch (Exception $exception) {
+    echo $exception->getMessage();
 }
-
-
-
