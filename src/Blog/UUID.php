@@ -2,7 +2,7 @@
 
 namespace GeekBrains\LevelTwo\Blog;
 
-use GeekBrains\LevelTwo\Blog\Exceptions\InvalidArgumentException;
+use GeekBrains\LevelTwo\Exceptions\InvalidArgumentException;
 
 class UUID
 {

@@ -3,7 +3,7 @@
 namespace GeekBrains\LevelTwo\Blog;
 
 use GeekBrains\LevelTwo\Person\Name;
-use GeekBrains\LevelTwo\Blog\UUID;
+
 
 class User
 {

@@ -4,13 +4,13 @@ namespace Commands;
 
 use GeekBrains\LevelTwo\Blog\Commands\Arguments;
 use GeekBrains\LevelTwo\Blog\Commands\CreateUserCommand;
-use GeekBrains\LevelTwo\Blog\Exceptions\ArgumentsException;
-use GeekBrains\LevelTwo\Blog\Exceptions\CommandException;
-use GeekBrains\LevelTwo\Blog\Exceptions\UserNotFoundException;
 use GeekBrains\LevelTwo\Blog\Repositories\Interfaces\UsersRepositoryInterface;
 use GeekBrains\LevelTwo\Blog\Repositories\UsersRepository\DummyUsersRepository;
 use GeekBrains\LevelTwo\Blog\User;
 use GeekBrains\LevelTwo\Blog\UUID;
+use GeekBrains\LevelTwo\Exceptions\ArgumentsException;
+use GeekBrains\LevelTwo\Exceptions\CommandException;
+use GeekBrains\LevelTwo\Exceptions\UserNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 class CreateUserCommandTest extends TestCase

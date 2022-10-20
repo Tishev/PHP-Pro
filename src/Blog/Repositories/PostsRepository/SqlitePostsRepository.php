@@ -2,12 +2,15 @@
 
 namespace GeekBrains\LevelTwo\Blog\Repositories\PostsRepository;
 
-use GeekBrains\LevelTwo\Blog\Exceptions\InvalidArgumentException;
-use GeekBrains\LevelTwo\Blog\Exceptions\PostNotFoundException;
+use GeekBrains\LevelTwo\Blog\Post;
 use GeekBrains\LevelTwo\Blog\Repositories\Interfaces\PostsRepositoryInterface;
 use GeekBrains\LevelTwo\Blog\User;
 use GeekBrains\LevelTwo\Blog\UUID;
-use GeekBrains\LevelTwo\Blog\Post;
+use GeekBrains\LevelTwo\Exceptions\InvalidArgumentException;
+use GeekBrains\LevelTwo\Exceptions\PostNotFoundException;
+use GeekBrains\LevelTwo\Exceptions\UserNotFoundException;
+use GeekBrains\LevelTwo\Person\Name;
+
 
 class SqlitePostsRepository implements PostsRepositoryInterface
 {
@@ -19,12 +22,15 @@ class SqlitePostsRepository implements PostsRepositoryInterface
 
     /**
      * @throws PostNotFoundException
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException|UserNotFoundException
      */
     public function get(UUID $uuid): Post
     {
         $statement = $this->connection->prepare(
-            'SELECT * FROM posts WHERE uuid = :uuid'
+            'SELECT *
+             FROM posts LEFT JOIN users
+                    ON posts.author_uuid = users.uuid 
+                    WHERE posts.uuid = :uuid'
         );
         $statement->execute([
             ':uuid' => (string)$uuid,
@@ -44,7 +50,7 @@ class SqlitePostsRepository implements PostsRepositoryInterface
 // Выполняем запрос с конкретными значениями
         $statement->execute([
             ':uuid' => $post->getUuid(),
-            ':author_uuid' => $post->getAuthorUuid(),
+            ':author_uuid' => $post->getUser()->uuid(),
             ':title' => $post->getTitle(),
             ':text' => $post->getText()
         ]);
@@ -54,19 +60,30 @@ class SqlitePostsRepository implements PostsRepositoryInterface
     /**
      * @throws PostNotFoundException
      * @throws InvalidArgumentException
+     * @throws UserNotFoundException
      */
     private function getPost(\PDOStatement $statement, string $postUuId): Post
     {
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
         if ($result === false) {
             throw new PostNotFoundException(
                 "Cannot find post: $postUuId"
             );
         }
-// Создаём объект пользователя с полем username
+
+        //$userRepository = new SqliteUsersRepository($this->connection);
+        //$user = $userRepository->get(new UUID($result['author_uuid']));
+
+        $user = new User(
+            new UUID($result['author_uuid']),
+            $result['username'],
+            new Name($result['first_name'], $result['last_name'])
+        );
+
         return new Post(
             new UUID($result['uuid']),
-            new UUID($result['author_uuid']),
+            $user,
             $result['title'],
             $result['text']
         );

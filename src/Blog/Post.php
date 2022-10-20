@@ -7,78 +7,78 @@ class Post
 {
 
     public function __construct(
-        private ?UUID   $uuid = null,
-        private ?UUID   $author_uuid = null,
-        private ?string $title = null,
-        private ?string $text = null,
+        private UUID   $uuid,
+        private User   $user,
+        private string $title,
+        private string $text,
     )
     {}
 
     public function __toString()
     {
-        return $this->author_uuid . ' пишет: ' . $this->text;
+        return $this->user->username() . ' пишет: ' . $this->text;
     }
 
     /**
-     * @return UUID|null
+     * @return UUID
      */
-    public function getUuid(): ?UUID
+    public function getUuid(): UUID
     {
         return $this->uuid;
     }
 
     /**
-     * @param UUID|null $uuid
+     * @param UUID $uuid
      */
-    public function setUuid(?UUID $uuid): void
+    public function setUuid(UUID $uuid): void
     {
         $this->uuid = $uuid;
     }
 
     /**
-     * @return UUID|null
+     * @return User
      */
-    public function getAuthorUuid(): ?UUID
+    public function getUser(): User
     {
-        return $this->author_uuid;
+        return $this->user;
     }
 
     /**
-     * @param UUID|null $author_uuid
+     * @param User $user
      */
-    public function setAuthorUuid(?UUID $author_uuid): void
+    public function setUser(User $user): void
     {
-        $this->author_uuid = $author_uuid;
+        $this->user = $user;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @param string|null $title
+     * @param string $title
      */
-    public function setTitle(?string $title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getText(): ?string
+    public function getText(): string
     {
         return $this->text;
     }
 
     /**
-     * @param string|null $text
+     * @param string $text
      */
-    public function setText(?string $text): void
+    public function setText(string $text): void
     {
         $this->text = $text;
     }

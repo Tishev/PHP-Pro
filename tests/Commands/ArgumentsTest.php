@@ -3,7 +3,7 @@
 namespace Commands;
 
 use GeekBrains\LevelTwo\Blog\Commands\Arguments;
-use GeekBrains\LevelTwo\Blog\Exceptions\ArgumentsException;
+use GeekBrains\LevelTwo\Exceptions\ArgumentsException;
 use PHPUnit\Framework\TestCase;
 
 class ArgumentsTest extends TestCase
